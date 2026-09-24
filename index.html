@@ -52,6 +52,11 @@ body {
 .wrap { max-width: 1120px; margin-inline: auto; }
 
 header { padding-block: 56px 32px; display: grid; gap: 14px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.lang { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 2px; }
+.lang button { font: 700 12px/1 var(--mono); border: 0; background: transparent; color: var(--muted); padding: 7px 11px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.lang button:focus-visible { outline: 2px solid var(--my); outline-offset: 2px; }
 .kicker { font: 700 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 h1 {
   font: 800 clamp(40px, 7vw, 84px)/.95 var(--display);
@@ -199,14 +204,14 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">America · Malaysia · 1776–1986</div>
+    <div class="topbar"><div class="kicker" data-i18n="kicker">America · Malaysia · 1776–1986</div><div class="lang" id="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ms" aria-pressed="false">BM</button></div></div>
     <h1>Sementara itu di <span class="hl">Malaysia</span>…</h1>
     <section class="ages" aria-label="How old each country is">
-      <h3>America is 250 years old. We are 69.</h3>
+      <h3 data-i18n="ages">America is 250 years old. We are 69.</h3>
       <div class="line" role="img" aria-label="Timeline from 1776 to 2026. Peninsular Malaya became independent in 1957, when the USA was 181 years old.">
         <div class="seg us" style="left:0;width:72.4%"></div>
         <div class="seg my" style="left:72.4%;right:0"></div>
-        <div class="marker" style="left:72.4%"><span class="top">Merdeka</span><span class="bottom"><b>1957</b>USA was 181 years old</span></div>
+        <div class="marker" style="left:72.4%"><span class="top">Merdeka</span><span class="bottom"><b>1957</b><span data-i18n="usWas">USA was 181 years old</span></span></div>
         <span class="end start">1776</span><span class="end finish">2026</span>
       </div>
     </section>
@@ -217,7 +222,7 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
   <main class="timeline" id="timeline"></main>
 
   <footer>
-    Photos from Wikimedia Commons and Wikipedia. Movie posters are low-resolution copies used to identify each film; each card links to its source article. Draft content for review. Some photos are later illustrations of the place or topic, not taken in that year. Dates are local to where each event happened.
+    <span data-i18n="footer"></span>
   </footer>
 </div>
 
@@ -254,13 +259,13 @@ const EVENTS = [
   {
     year: 1929,
     us: { iso: "1929-10-29", date: "29 Oct 1929", title: "Wall Street crashes", text: "On Black Tuesday the stock market collapses. The Great Depression begins.", img: "img/us-1929.jpg", link: "https://en.wikipedia.org/wiki/Wall_Street_crash_of_1929" },
-    my: { date: "1930–1933", iso: "", gapText: "Same period", title: "Rubber and tin prices collapse", text: "Malaya earns its money selling rubber and tin, much of it to America. When US demand falls, estates and mines close. From August 1930 the British limit Chinese immigration.", img: "img/my-1929.jpg", link: "https://en.wikipedia.org/wiki/British_Malaya", facts: ["British Malaya", "Rubber & tin"] }
+    my: { date: "1930–1933", iso: "", gapText: "period", title: "Rubber and tin prices collapse", text: "Malaya earns its money selling rubber and tin, much of it to America. When US demand falls, estates and mines close. From August 1930 the British limit Chinese immigration.", img: "img/my-1929.jpg", link: "https://en.wikipedia.org/wiki/British_Malaya", facts: ["British Malaya", "Rubber & tin"] }
   },
   {
     year: 1941,
     us: { iso: "1941-12-07", date: "7 Dec 1941", title: "Pearl Harbor", text: "Japanese planes attack the US fleet in Hawaii. America enters World War II.", img: "img/us-1941.jpg", link: "https://en.wikipedia.org/wiki/Attack_on_Pearl_Harbor" },
     film: { title: "Pearl Harbor", year: "2001", note: "The attack itself", link: "https://en.wikipedia.org/wiki/Pearl_Harbor_(film)" },
-    my: { date: "8 Dec 1941", iso: "1941-12-08", gapText: "About 1 hour earlier", title: "Japan lands at Kota Bharu first", text: "The Japanese landing at Kota Bharu, Kelantan began about an hour before the bombs fell on Pearl Harbor (it was already 8 December here). KL falls in January and Singapore in February 1942. The occupation lasts until 1945.", img: "img/my-1941.jpg", link: "https://en.wikipedia.org/wiki/Battle_of_Kota_Bharu", facts: ["Occupation 1941–45"] }
+    my: { date: "8 Dec 1941", iso: "1941-12-08", gapText: "hour", title: "Japan lands at Kota Bharu first", text: "The Japanese landing at Kota Bharu, Kelantan began about an hour before the bombs fell on Pearl Harbor (it was already 8 December here). KL falls in January and Singapore in February 1942. The occupation lasts until 1945.", img: "img/my-1941.jpg", link: "https://en.wikipedia.org/wiki/Battle_of_Kota_Bharu", facts: ["Occupation 1941–45"] }
   },
   {
     year: 1955,
@@ -271,7 +276,7 @@ const EVENTS = [
     year: 1957,
     us: { iso: "1957-10-17", date: "Oct 1957", title: "Elvis in Jailhouse Rock", text: "Elvis Presley, the biggest star in America, premieres his film Jailhouse Rock. The title song tops the charts.", img: "img/us-1957.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/Jailhouse_Rock_(film)" },
     film: { title: "Elvis", year: "2022", note: "Elvis Presley's life", link: "https://en.wikipedia.org/wiki/Elvis_(2022_film)" },
-    my: { date: "31 Aug 1957", iso: "1957-08-31", gapText: "About 7 weeks earlier", title: "Merdeka!", text: "Seven weeks earlier, on 31 August, Tunku Abdul Rahman read the proclamation at Stadium Merdeka and shouted \"Merdeka!\" seven times. Malaya is independent. Sabah, Sarawak and Singapore are not part of it yet.", img: "img/my-1957.jpg", link: "https://en.wikipedia.org/wiki/Malayan_Declaration_of_Independence", facts: ["PM: Tunku Abdul Rahman", "11 states"] }
+    my: { date: "31 Aug 1957", iso: "1957-08-31", gapText: "weeks7", title: "Merdeka!", text: "Seven weeks earlier, on 31 August, Tunku Abdul Rahman read the proclamation at Stadium Merdeka and shouted \"Merdeka!\" seven times. Malaya is independent. Sabah, Sarawak and Singapore are not part of it yet.", img: "img/my-1957.jpg", link: "https://en.wikipedia.org/wiki/Malayan_Declaration_of_Independence", facts: ["PM: Tunku Abdul Rahman", "11 states"] }
   },
   {
     year: 1963,
@@ -304,6 +309,89 @@ const EVENTS = [
 
 const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+const MS = {
+  1776: { us: ["Amerika mengisytiharkan kemerdekaan", "Tiga belas tanah jajahan British menandatangani Deklarasi Kemerdekaan di Philadelphia. Amerika Syarikat lahir."],
+          my: ["Melaka milik Belanda", "Belanda menguasai Melaka sejak merampasnya daripada Portugis pada 1641. Kawasan lain di semenanjung ialah kesultanan Melayu: Johor, Kedah, Perak, Selangor, Terengganu dan lain-lain. British belum bertapak lagi.", ["Melaka: Belanda", "Belum ada British"]],
+          film: "Seorang petani berperang dalam Perang Revolusi, bermula 1776" },
+  1787: { us: ["Perlembagaan Amerika ditandatangani", "Perwakilan di Philadelphia menandatangani Perlembagaan. Ia masih perlembagaan negara itu hari ini."],
+          my: ["Pulau Pinang baru jadi milik British", "Setahun sebelumnya, pada 11 Ogos 1786, Francis Light menaikkan bendera British di Pulau Pinang melalui perjanjian dengan Sultan Kedah. George Town ialah tapak pertama British di Tanah Melayu.", ["British: Pulau Pinang sahaja"]],
+          film: "Kisah pengasas Amerika dalam bentuk muzikal" },
+  1861: { us: ["Perang Saudara bermula", "Meriam Konfederasi menembak Fort Sumter. Empat tahun perang menyusul. Perang ini menamatkan perhambaan dan mengorbankan ratusan ribu askar."],
+          my: ["Kuala Lumpur baru kem bijih timah berusia empat tahun", "Pelombong bijih timah membuka KL pada 1857 di pertemuan Sungai Klang dan Sungai Gombak. Yap Ah Loy (dalam gambar), seorang pelombong, menjadi Kapitan Cina di situ pada 1868. Di Perak, kongsi gelap Cina mula bertempur dalam Perang Larut kerana bijih timah.", ["Negeri-Negeri Selat: Pulau Pinang, Melaka, Singapura"]],
+          film: "Selatan Amerika semasa Perang Saudara" },
+  1876: { us: ["Panggilan telefon pertama", "Alexander Graham Bell memanggil pembantunya di bilik sebelah: \"Mr. Watson, come here, I want to see you.\""],
+          my: ["Residen British di Perak baru dibunuh", "Perjanjian Pangkor 1874 memaksa Perak menerima Residen British. Pada November 1875, Residen itu, J.W.W. Birch, dibunuh di Pasir Salak. Maharaja Lela digantung pada tahun berikutnya. (Dalam gambar: Birch.)", ["Perjanjian Pangkor 1874"]] },
+  1903: { us: ["Wright bersaudara terbang", "Orville Wright terbang selama 12 saat di Kill Devil Hills, berhampiran Kitty Hawk, North Carolina. Ia penerbangan kapal terbang berkuasa yang pertama."],
+          my: ["Negeri-Negeri Melayu Bersekutu, ditadbir dari KL", "Sejak 1896 British mentadbir Perak, Selangor, Negeri Sembilan dan Pahang bersama-sama dari Kuala Lumpur. Bangunan Sultan Abdul Samad dibuka pada 1897. Getah akan melonjak apabila rakyat Amerika mula membeli kereta.", ["NNMB sejak 1896", "Ibu kota: KL"]] },
+  1929: { us: ["Wall Street runtuh", "Pada Selasa Hitam, pasaran saham runtuh. Kemelesetan Besar bermula."],
+          my: ["Harga getah dan bijih timah jatuh", "Tanah Melayu hidup dengan menjual getah dan bijih timah, kebanyakannya kepada Amerika. Apabila permintaan Amerika jatuh, ladang dan lombong ditutup. Mulai Ogos 1930 British mengehadkan kemasukan pendatang Cina.", ["Tanah Melayu British", "Getah & bijih timah"]] },
+  1941: { us: ["Pearl Harbor", "Kapal terbang Jepun menyerang armada Amerika di Hawaii. Amerika memasuki Perang Dunia Kedua."],
+          my: ["Jepun mendarat di Kota Bharu dahulu", "Pendaratan Jepun di Kota Bharu, Kelantan bermula kira-kira sejam sebelum bom jatuh di Pearl Harbor (di sini sudah 8 Disember). KL jatuh pada Januari dan Singapura pada Februari 1942. Pendudukan berlarutan hingga 1945.", ["Pendudukan 1941–45"]],
+          film: "Serangan itu sendiri" },
+  1955: { us: ["Disneyland dibuka", "Walt Disney membuka taman tema pertamanya di Anaheim, California."],
+          my: ["Pilihan raya pertama, kemudian Rundingan Baling", "Sepuluh hari kemudian Perikatan memenangi 51 daripada 52 kerusi dalam pilihan raya persekutuan pertama Tanah Melayu, dan Tunku Abdul Rahman menjadi Ketua Menteri. Pada 28 Disember beliau bertemu pemimpin komunis Chin Peng di Baling. Darurat berterusan hingga 1960.", ["Ketua Menteri: Tunku", "Darurat 1948–60"]] },
+  1957: { us: ["Elvis dalam Jailhouse Rock", "Elvis Presley, bintang paling terkenal di Amerika, menayangkan filemnya Jailhouse Rock. Lagu temanya mendahului carta."],
+          my: ["Merdeka!", "Tujuh minggu sebelumnya, pada 31 Ogos, Tunku Abdul Rahman membaca pengisytiharan di Stadium Merdeka dan melaungkan \"Merdeka!\" tujuh kali. Tanah Melayu merdeka. Sabah, Sarawak dan Singapura belum menyertainya.", ["PM: Tunku Abdul Rahman", "11 negeri"]],
+          film: "Kisah hidup Elvis Presley" },
+  1963: { us: ["JFK ditembak di Dallas", "Presiden John F. Kennedy dibunuh semasa menaiki kereta terbuka dalam perarakan di Dealey Plaza."],
+          my: ["Malaysia baru berusia 67 hari", "Tanah Melayu, Singapura, Sabah dan Sarawak bergabung pada 16 September. Sukarno dari Indonesia membalas dengan Konfrontasi dan laungan \"Ganyang Malaysia\". Singapura masih salah sebuah negeri.", ["PM: Tunku Abdul Rahman", "14 negeri"]],
+          film: "Siasatan tentang pembunuhan itu" },
+  1969: { us: ["Manusia berjalan di Bulan", "Apollo 11 mendarat. Neil Armstrong dan Buzz Aldrin menjejakkan kaki di Bulan sambil kira-kira 600 juta orang menonton."],
+          my: ["Dua bulan selepas 13 Mei", "Rusuhan kaum di Kuala Lumpur berlaku selepas pilihan raya Mei. Parlimen digantung dan negara ditadbir oleh Majlis Gerakan Negara (MAGERAN) di bawah Tun Abdul Razak.", ["Parlimen digantung", "Pemerintahan darurat"]],
+          film: "Neil Armstrong dan Apollo 11" },
+  1975: { us: ["Saigon jatuh", "Helikopter mengangkut rakyat Amerika terakhir dari bumbung ketika kereta kebal Vietnam Utara memasuki Saigon. Perang Vietnam tamat."],
+          my: ["Muhammad Ali bertinju di KL", "Pada 1 Julai, Muhammad Ali mempertahankan gelaran juara heavyweight dunia menentang Joe Bugner di Stadium Merdeka dan menang mata selepas 15 pusingan. Tun Abdul Razak Perdana Menteri.", ["PM: Tun Abdul Razak", "Stadium Merdeka"]] },
+  1981: { us: ["Kapal angkasa ulang-alik terbang", "Columbia dilancarkan dari Florida dalam misi STS-1, penerbangan pertama kapal angkasa yang boleh diguna semula."],
+          my: ["Mahathir tiga bulan lagi", "Hussein Onn Perdana Menteri. Pada 16 Julai 1981 Dr Mahathir Mohamad mengambil alih dan kekal selama 22 tahun: Dasar Pandang ke Timur, Proton, Menara Berkembar.", ["PM: Hussein Onn", "kemudian Mahathir"]] },
+  1986: { us: ["Challenger meletup", "Kapal angkasa itu hancur 73 saat selepas pelancaran, mengorbankan ketujuh-tujuh anak kapal, termasuk guru Christa McAuliffe."],
+          my: ["Proton Saga sudah di jalan raya", "Kereta nasional pertama Malaysia dilancarkan pada Julai 1985. Dalam beberapa tahun ia menguasai sebahagian besar pasaran kereta tempatan.", ["PM: Mahathir", "Saga: sekitar RM17,000"]] }
+};
+
+const UI = {
+  en: {
+    kicker: "America · Malaysia · 1776–1986", ages: "America is 250 years old. We are 69.", usWas: "USA was 181 years old",
+    footer: "Photos from Wikimedia Commons and Wikipedia. Movie posters are low-resolution copies used to identify each film. Each card links to its source article. Some photos show the place or topic later, not in that year. Dates are local to where each event happened.",
+    all: "All", readMore: "Read more", readWiki: "Read on Wikipedia →", movie: "The movie", usa: "USA",
+    usAge: n => n === 0 ? "USA: day one" : `USA: ${n} yrs old`, usAgeShort: n => n === 0 ? "USA day one" : `USA ${n} yrs old`,
+    merdekaIn: n => `Merdeka in ${n} yrs`,
+    year: "year", month: "month", day: "day", earlier: "earlier", later: "later", about: "About", sameDay: "Same day",
+    plural: (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`,
+    gapText: { period: "Same period", hour: "About 1 hour earlier", weeks7: "About 7 weeks earlier" }
+  },
+  ms: {
+    kicker: "Amerika · Malaysia · 1776–1986", ages: "Amerika berusia 250 tahun. Kita 69.", usWas: "Amerika sudah 181 tahun",
+    footer: "Gambar daripada Wikimedia Commons dan Wikipedia. Poster filem ialah salinan resolusi rendah untuk mengenal pasti setiap filem. Setiap kad memaut ke artikel sumbernya. Sesetengah gambar menunjukkan tempat atau topik itu pada tahun kemudian. Tarikh mengikut waktu tempatan di tempat peristiwa berlaku.",
+    all: "Semua", readMore: "Baca lagi", readWiki: "Baca di Wikipedia →", movie: "Filemnya", usa: "Amerika",
+    usAge: n => n === 0 ? "Amerika: hari pertama" : `Amerika: ${n} tahun`, usAgeShort: n => n === 0 ? "Amerika hari pertama" : `Amerika ${n} tahun`,
+    merdekaIn: n => `Merdeka dalam ${n} tahun`,
+    year: "tahun", month: "bulan", day: "hari", earlier: "lebih awal", later: "kemudian", about: "Kira-kira", sameDay: "Hari yang sama",
+    plural: (n, w) => `${n} ${w}`,
+    gapText: { period: "Tempoh yang sama", hour: "Kira-kira 1 jam lebih awal", weeks7: "Kira-kira 7 minggu lebih awal" }
+  }
+};
+const ERA_MS = {
+  before: ["Sebelum British", "Kesultanan Melayu dan Melaka Belanda"],
+  british: ["Tanah Melayu British", "1786–1941"],
+  war: ["Perang dan Darurat", "Pendudukan Jepun, kemudian pemberontakan komunis"],
+  malaya: ["Persekutuan Tanah Melayu", "Merdeka, sebelum Malaysia"],
+  malaysia: ["Malaysia", "Sejak 16 September 1963"]
+};
+const MONTHS_MS = { Mar: "Mac", May: "Mei", Aug: "Ogos", Oct: "Okt", Dec: "Dis" };
+
+let lang = "en";
+try { if (localStorage.getItem("lang") === "ms") lang = "ms"; } catch (err) { /* storage unavailable */ }
+const T = () => UI[lang];
+const fmtDate = d => lang === "ms" ? d.replace(/\b(Mar|May|Aug|Oct|Dec)\b/g, m => MONTHS_MS[m] ?? m) : d;
+
+function loc(e, side) {
+  const base = e[side];
+  const tr = lang === "ms" ? MS[e.year]?.[side] : undefined;
+  return { ...base, title: tr?.[0] ?? base.title, text: tr?.[1] ?? base.text, facts: tr?.[2] ?? base.facts, date: fmtDate(base.date) };
+}
+function filmNote(e) {
+  return (lang === "ms" ? MS[e.year]?.film : undefined) ?? e.film.note;
+}
+
 const ERAS = [
   { id: "before", from: 1776, title: "Before the British", sub: "Sultanates and Dutch Melaka" },
   { id: "british", from: 1786, title: "British Malaya", sub: "1786–1941" },
@@ -312,6 +400,7 @@ const ERAS = [
   { id: "malaysia", from: 1963, title: "Malaysia", sub: "From 16 September 1963" }
 ];
 const eraOf = year => ERAS.filter(x => year >= x.from).pop();
+const eraText = era => lang === "ms" ? ERA_MS[era.id] : [era.title, era.sub];
 
 function mySideLabel(year) {
   return year < 1963 ? "Tanah Melayu" : "Malaysia";
@@ -321,30 +410,34 @@ function parseIso(iso) {
   const [y, m = 1, d = 1] = iso.split("-").map(Number);
   return { y, m, d, exact: iso.length === 10 };
 }
-const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 function gapLabel(e) {
-  if (e.my.gapText) return e.my.gapText;
+  const t = T();
+  if (e.my.gapText) return t.gapText[e.my.gapText];
   const a = parseIso(e.us.iso), b = parseIso(e.my.iso);
   const earlier = b.y < a.y || (b.y === a.y && (b.m < a.m || (b.m === a.m && b.d < a.d)));
   const [from, to] = earlier ? [b, a] : [a, b];
-  const side = earlier ? "earlier" : "later";
-  if (!b.exact) return `About ${plural(to.y - from.y, "year")} ${side}`;
+  const side = earlier ? t.earlier : t.later;
+  if (!b.exact) return `${t.about} ${t.plural(to.y - from.y, t.year)} ${side}`;
   let y = to.y - from.y, m = to.m - from.m, d = to.d - from.d;
   if (d < 0) { m -= 1; d += new Date(Date.UTC(to.y, to.m - 1, 0)).getUTCDate(); }
   if (m < 0) { y -= 1; m += 12; }
-  if (y === 0 && m === 0 && d === 0) return "Same day";
-  if (y > 0) return `${plural(y, "year")}${m ? " " + plural(m, "month") : ""} ${side}`;
-  if (m > 0) return `${plural(m, "month")}${d ? " " + plural(d, "day") : ""} ${side}`;
-  return `${plural(d, "day")} ${side}`;
+  if (y === 0 && m === 0 && d === 0) return t.sameDay;
+  if (y > 0) return `${t.plural(y, t.year)}${m ? " " + t.plural(m, t.month) : ""} ${side}`;
+  if (m > 0) return `${t.plural(m, t.month)}${d ? " " + t.plural(d, t.day) : ""} ${side}`;
+  return `${t.plural(d, t.day)} ${side}`;
 }
 
+function filmBlock(e) {
+  if (!e.film) return "";
+  return `<a class="film" href="${e.film.link}" target="_blank" rel="noopener"><img src="img/film/${e.year}.jpg" alt="${escapeHtml(e.film.title)} poster" loading="lazy"><div><span>${T().movie}</span>${escapeHtml(e.film.title)} (${e.film.year})<em>${escapeHtml(filmNote(e))}</em></div></a>`;
+}
+const myChips = (d, year) => [...d.facts, year < 1957 ? T().merdekaIn(1957 - year) : `Merdeka +${year - 1957}`];
+
 function card(side, e, year) {
-  const d = e[side];
-  const flag = side === "us" ? "USA" : mySideLabel(year);
-  const usAge = year - 1776;
-  const chips = side === "us"
-    ? [usAge === 0 ? "USA: day one" : `USA: ${usAge} yrs old`]
-    : [...d.facts, year < 1957 ? `Merdeka in ${1957 - year} yrs` : `Merdeka +${year - 1957}`];
+  const d = loc(e, side);
+  const t = T();
+  const flag = side === "us" ? t.usa : mySideLabel(year);
+  const chips = side === "us" ? [t.usAge(year - 1776)] : myChips(d, year);
   return `
     <article class="card ${side}">
       <figure>
@@ -355,27 +448,24 @@ function card(side, e, year) {
         ${side === "us" ? `<div class="date">${d.date}</div>` : `<div class="date">${d.date} <span class="gap">${gapLabel(e)}</span></div>`}
         <h2>${escapeHtml(d.title)}</h2>
         <p>${escapeHtml(d.text)}</p>
-        ${side === "us" && e.film ? `<a class="film" href="${e.film.link}" target="_blank" rel="noopener"><img src="img/film/${year}.jpg" alt="${escapeHtml(e.film.title)} poster" loading="lazy"><div><span>The movie</span>${escapeHtml(e.film.title)} (${e.film.year})<em>${escapeHtml(e.film.note)}</em></div></a>` : ""}
+        ${side === "us" ? filmBlock(e) : ""}
         <div class="facts">${chips.map(f => `<span>${escapeHtml(f)}</span>`).join("")}</div>
-        <a class="more" href="${d.link}" target="_blank" rel="noopener">Read on Wikipedia →</a>
+        <a class="more" href="${d.link}" target="_blank" rel="noopener">${t.readWiki}</a>
       </div>
     </article>`;
 }
 
 function pair(e) {
-  const { us, my, year } = { ...e };
-  const usAge = year - 1776;
-  const film = e.film ? `<a class="film" href="${e.film.link}" target="_blank" rel="noopener"><img src="img/film/${year}.jpg" alt="${escapeHtml(e.film.title)} poster" loading="lazy"><div><span>The movie</span>${escapeHtml(e.film.title)} (${e.film.year})<em>${escapeHtml(e.film.note)}</em></div></a>` : "";
-  const myChips = [...my.facts, year < 1957 ? `Merdeka in ${1957 - year} yrs` : `Merdeka +${year - 1957}`];
+  const us = loc(e, "us"), my = loc(e, "my"), year = e.year, t = T();
   return `
     <article class="pair">
       <div class="pair-imgs">
-        <figure class="us"><img class="${us.fit || ""}" src="${us.img}" alt="${escapeHtml(us.title)}" loading="lazy"><span class="flag">USA</span></figure>
+        <figure class="us"><img class="${us.fit || ""}" src="${us.img}" alt="${escapeHtml(us.title)}" loading="lazy"><span class="flag">${t.usa}</span></figure>
         <figure class="my"><img class="${my.fit || ""}" src="${my.img}" alt="${escapeHtml(my.title)}" loading="lazy"><span class="flag">${mySideLabel(year)}</span></figure>
       </div>
       <div class="pair-body">
         <div class="pline us">
-          <div class="date">${us.date} · ${usAge === 0 ? "USA day one" : `USA ${usAge} yrs old`}</div>
+          <div class="date">${us.date} · ${t.usAgeShort(year - 1776)}</div>
           <h2>${escapeHtml(us.title)}</h2>
         </div>
         <div class="pline my">
@@ -383,25 +473,27 @@ function pair(e) {
           <h2>${escapeHtml(my.title)}</h2>
         </div>
         <details>
-          <summary>Read more</summary>
+          <summary>${t.readMore}</summary>
           <div class="more-body">
-            <p><b class="tag us">USA</b> ${escapeHtml(us.text)} <a href="${us.link}" target="_blank" rel="noopener">Wikipedia</a></p>
-            ${film}
+            <p><b class="tag us">${t.usa}</b> ${escapeHtml(us.text)} <a href="${us.link}" target="_blank" rel="noopener">Wikipedia</a></p>
+            ${filmBlock(e)}
             <p><b class="tag my">${mySideLabel(year)}</b> ${escapeHtml(my.text)} <a href="${my.link}" target="_blank" rel="noopener">Wikipedia</a></p>
-            <div class="facts">${myChips.map(f => `<span>${escapeHtml(f)}</span>`).join("")}</div>
+            <div class="facts">${myChips(my, year).map(f => `<span>${escapeHtml(f)}</span>`).join("")}</div>
           </div>
         </details>
       </div>
     </article>`;
 }
 
-function render(eraId) {
+let currentEra = "all";
+function render() {
   let html = "", lastEra = null;
   for (const e of EVENTS) {
     const era = eraOf(e.year);
-    if (eraId !== "all" && era.id !== eraId) continue;
+    if (currentEra !== "all" && era.id !== currentEra) continue;
     if (era !== lastEra) {
-      html += `<div class="era"><strong>${era.title}</strong><span>${era.sub}</span></div>`;
+      const [title, sub] = eraText(era);
+      html += `<div class="era"><strong>${title}</strong><span>${sub}</span></div>`;
       lastEra = era;
     }
     html += `
@@ -416,15 +508,33 @@ function render(eraId) {
 }
 
 const filters = document.getElementById("filters");
-filters.innerHTML = [["all", "All"], ...ERAS.map(x => [x.id, x.title])]
-  .map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("");
+function renderFilters() {
+  filters.innerHTML = [["all", T().all], ...ERAS.map(x => [x.id, eraText(x)[0]])]
+    .map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${v === currentEra}">${l}</button>`).join("");
+}
 filters.addEventListener("click", ev => {
   const b = ev.target.closest("button");
   if (!b) return;
+  currentEra = b.dataset.v;
   filters.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-  render(b.dataset.v);
+  render();
 });
-render("all");
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = T()[el.dataset.i18n]; });
+  document.querySelectorAll("#lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  renderFilters();
+  render();
+}
+document.getElementById("lang").addEventListener("click", ev => {
+  const b = ev.target.closest("button");
+  if (!b || b.dataset.lang === lang) return;
+  lang = b.dataset.lang;
+  try { localStorage.setItem("lang", lang); } catch (err) { /* storage unavailable */ }
+  applyLang();
+});
+applyLang();
 </script>
 </body>
 </html>
