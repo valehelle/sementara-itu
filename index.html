@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Famous American moments from 1776 to 1986, next to what was happening in Tanah Melayu and Malaysia at the same time.">
+<title>Sementara Itu di Malaysia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+body {{ margin: 0; }}
+img {{ max-width: 100%; }}
+[hidden] {{ display: none !important; }}
+:root {
+  --paper: #eef1f5;
+  --card: #ffffff;
+  --ink: #131a26;
+  --muted: #566074;
+  --rule: #cfd6e0;
+  --us: #2f4b8a;
+  --us-soft: #e3e9f5;
+  --my: #c98f00;
+  --my-soft: #fbf1d6;
+  --my-ink: #7a5600;
+  --red: #b3261e;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0f141c; --card: #171e2a; --ink: #e7ebf2; --muted: #9aa5b8; --rule: #2a3444;
+    --us: #8fa8e0; --us-soft: #1c2740; --my: #f0b92e; --my-soft: #2c2511; --my-ink: #f0c65a; --red: #ef6b62;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f141c; --card: #171e2a; --ink: #e7ebf2; --muted: #9aa5b8; --rule: #2a3444;
+  --us: #8fa8e0; --us-soft: #1c2740; --my: #f0b92e; --my-soft: #2c2511; --my-ink: #f0c65a; --red: #ef6b62;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.55 var(--body);
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1120px; margin-inline: auto; }
+
+header { padding-block: 56px 32px; display: grid; gap: 14px; }
+.kicker { font: 700 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+h1 {
+  font: 800 clamp(40px, 7vw, 84px)/.95 var(--display);
+  letter-spacing: -.03em; margin: 0; text-wrap: balance;
+}
+h1 .hl { color: var(--my); }
+.lede { max-width: 60ch; margin: 0; color: var(--muted); font-size: 19px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 8px; font: 500 13px/1 var(--mono); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 8px 28px; }
+.filters button {
+  font: 500 13px/1 var(--mono); color: var(--ink); background: transparent;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+}
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.filters button:focus-visible, .card a:focus-visible { outline: 2px solid var(--my); outline-offset: 2px; }
+
+/* Timeline */
+.timeline { position: relative; display: grid; gap: 40px; }
+.timeline::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+  transform: translateX(-1px);
+  background: linear-gradient(var(--us) 0 50%, var(--my) 50% 100%);
+  background-size: 2px 16px; opacity: .45;
+}
+.row { display: grid; grid-template-columns: 1fr 104px 1fr; align-items: start; }
+.year {
+  grid-column: 2; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px);
+  justify-self: center; z-index: 1;
+  font: 700 18px/1 var(--mono); font-variant-numeric: tabular-nums;
+  background: var(--ink); color: var(--paper); padding: 10px 12px; border-radius: 6px;
+}
+.card {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
+  overflow: hidden; display: grid;
+}
+.card.us { grid-column: 1; grid-row: 1; }
+.card.my { grid-column: 3; grid-row: 1; }
+.card figure { margin: 0; position: relative; aspect-ratio: 16 / 10; background: var(--rule); overflow: hidden; }
+.card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card.us img { filter: grayscale(.15); }
+.card img.contain { object-fit: contain; background: #fff; padding: 8px; }
+.flag {
+  position: absolute; left: 12px; top: 12px;
+  font: 700 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  padding: 7px 9px; border-radius: 4px;
+}
+.us .flag { background: var(--us); color: #fff; }
+.my .flag { background: var(--my); color: #1a1300; }
+.body { padding: 18px 20px 20px; display: grid; gap: 8px; }
+.date { font: 500 13px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.card h2 { font: 800 24px/1.12 var(--display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.card p { margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.facts span {
+  font: 500 12px/1 var(--mono); padding: 6px 8px; border-radius: 4px;
+  background: var(--my-soft); color: var(--my-ink); font-variant-numeric: tabular-nums;
+}
+.us .facts span { background: var(--us-soft); color: var(--us); }
+
+/* Age comparison */
+.ages { display: grid; gap: 10px; padding: 20px; margin-top: 12px; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; }
+.ages h3 { margin: 0 0 4px; font: 800 20px/1.2 var(--display); }
+.line { position: relative; height: 14px; margin-top: 44px; margin-bottom: 48px; border-radius: 7px; overflow: visible; }
+.seg { position: absolute; top: 0; bottom: 0; }
+.seg.us { background: var(--us); border-radius: 7px 0 0 7px; }
+.seg.my { background: var(--my); border-radius: 0 7px 7px 0; }
+.marker { position: absolute; top: -10px; bottom: -10px; width: 3px; margin-left: -1.5px; background: var(--ink); border-radius: 2px; }
+.marker span { position: absolute; right: -2px; white-space: nowrap; text-align: right; font: 500 13px/1.3 var(--mono); color: var(--muted); }
+.marker .top { bottom: calc(100% + 6px); font-weight: 700; color: var(--ink); font-family: var(--display); font-size: 16px; }
+.marker .bottom { top: calc(100% + 6px); }
+.marker b { display: block; font-weight: 700; color: var(--ink); }
+.end { position: absolute; top: calc(100% + 16px); font: 500 12px/1 var(--mono); color: var(--muted); }
+.end.start { left: 0; }
+.end.finish { right: 0; }
+
+/* Era dividers */
+.era { display: grid; justify-items: center; gap: 4px; text-align: center; padding-block: 8px; position: relative; z-index: 1; }
+.era strong { font: 800 clamp(22px, 3vw, 30px)/1.1 var(--display); background: var(--paper); padding-inline: 12px; text-wrap: balance; }
+.era span { font: 500 12px/1.3 var(--mono); color: var(--muted); background: var(--paper); padding-inline: 12px; letter-spacing: .06em; text-transform: uppercase; }
+
+.film {
+  display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; margin-top: 4px; padding: 10px; border-radius: 6px;
+  background: var(--us-soft); color: var(--ink); text-decoration: none; font: 600 15px/1.3 var(--body);
+}
+.film img { width: 64px; height: 96px; object-fit: cover; border-radius: 3px; display: block; box-shadow: 0 1px 3px #0003; }
+.film div { display: grid; gap: 4px; }
+.film span { font: 700 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--us); }
+.film em { font: 500 12px/1.3 var(--mono); font-style: normal; color: var(--muted); }
+.film:hover { text-decoration: underline; }
+.gap { display: inline-block; margin-left: 6px; padding: 3px 6px; border-radius: 4px; background: var(--my); color: #1a1300; font-weight: 700; }
+.more { font: 500 13px/1 var(--mono); color: var(--muted); text-decoration: none; margin-top: 4px; justify-self: start; }
+.more:hover { color: var(--ink); text-decoration: underline; }
+
+footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; max-width: 70ch; }
+
+/* Compact paired card (phones) */
+.pair { display: none; }
+@media (max-width: 760px) {
+  .timeline { gap: 20px; }
+  .timeline::before { left: 9px; width: 3px; transform: none; background: linear-gradient(var(--us), var(--my)); opacity: .6; border-radius: 2px; }
+  .row { grid-template-columns: 1fr; row-gap: 8px; position: relative; padding-left: 30px; }
+  .row::before {
+    content: ""; position: absolute; left: 3px; top: 7px; width: 15px; height: 15px; border-radius: 50%;
+    background: var(--paper); border: 3px solid var(--ink); box-sizing: border-box;
+  }
+  .year { grid-column: 1; grid-row: 1; justify-self: start; font-size: 15px; padding: 7px 10px; }
+  .card { display: none; }
+  .pair { display: grid; grid-column: 1; grid-row: 2; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  .pair-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--rule); }
+  .pair-imgs figure { margin: 0; position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--rule); }
+  .pair-imgs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pair-imgs img.contain { object-fit: contain; background: #fff; padding: 6px; }
+  .pair-imgs .flag { left: 8px; top: 8px; font-size: 10px; padding: 5px 7px; }
+  .pair-body { display: grid; gap: 12px; padding: 14px 16px 6px; }
+  .pline { display: grid; gap: 4px; padding-left: 10px; border-left: 3px solid var(--us); }
+  .pline.my { border-left-color: var(--my); }
+  .pline h2 { margin: 0; font: 800 19px/1.15 var(--display); text-wrap: balance; }
+  .pline .date { font-size: 12px; line-height: 1.6; }
+  .pair details { border-top: 1px solid var(--rule); margin-inline: -16px; }
+  .pair summary { cursor: pointer; padding: 12px 16px; font: 500 13px/1 var(--mono); color: var(--muted); list-style: none; }
+  .pair summary::-webkit-details-marker { display: none; }
+  .pair summary::after { content: " +"; }
+  .pair details[open] summary::after { content: " −"; }
+  .more-body { display: grid; gap: 12px; padding: 0 16px 16px; font-size: 16px; }
+  .more-body p { margin: 0; }
+  .more-body a:not(.film) { color: var(--muted); font: 500 12px/1 var(--mono); }
+  .tag { font: 700 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 4px 6px; border-radius: 3px; margin-right: 4px; vertical-align: 2px; }
+  .tag.us { background: var(--us); color: #fff; }
+  .tag.my { background: var(--my); color: #1a1300; }
+  .era { justify-items: start; text-align: left; padding-block: 12px 0; padding-left: 30px; }
+  .era strong, .era span { padding-inline: 0; }
+  .filters { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none; }
+  .filters button { flex: none; }
+  header { padding-block: 32px 20px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card { transition: transform .2s ease; }
+  .card:hover { transform: translateY(-2px); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">America · Malaysia · 1776–1986</div>
+    <h1>Sementara itu di <span class="hl">Malaysia</span>…</h1>
+    <section class="ages" aria-label="How old each country is">
+      <h3>America is 250 years old. We are 69.</h3>
+      <div class="line" role="img" aria-label="Timeline from 1776 to 2026. Peninsular Malaya became independent in 1957, when the USA was 181 years old.">
+        <div class="seg us" style="left:0;width:72.4%"></div>
+        <div class="seg my" style="left:72.4%;right:0"></div>
+        <div class="marker" style="left:72.4%"><span class="top">Merdeka</span><span class="bottom"><b>1957</b>USA was 181 years old</span></div>
+        <span class="end start">1776</span><span class="end finish">2026</span>
+      </div>
+    </section>
+  </header>
+
+  <nav class="filters" aria-label="Filter by era" id="filters"></nav>
+
+  <main class="timeline" id="timeline"></main>
+
+  <footer>
+    Photos from Wikimedia Commons and Wikipedia. Movie posters are low-resolution copies used to identify each film; each card links to its source article. Draft content for review. Some photos are later illustrations of the place or topic, not taken in that year. Dates are local to where each event happened.
+  </footer>
+</div>
+
+<script>
+const EVENTS = [
+  {
+    year: 1776,
+    us: { iso: "1776-07-04", date: "4 Jul 1776", title: "America declares independence", text: "Thirteen British colonies sign the Declaration of Independence in Philadelphia. The United States is born.", img: "img/us-1776.jpg", link: "https://en.wikipedia.org/wiki/United_States_Declaration_of_Independence" },
+    film: { title: "The Patriot", year: "2000", note: "A farmer fights in the Revolutionary War, starting 1776", link: "https://en.wikipedia.org/wiki/The_Patriot_(2000_film)" },
+    my: { date: "14 Jan 1641", iso: "1641-01-14", title: "Melaka belongs to the Dutch", text: "The Dutch have held Melaka since taking it from the Portuguese in 1641. The rest of the peninsula is Malay sultanates: Johor, Kedah, Perak, Selangor, Terengganu and others. The British have no foothold yet.", img: "img/my-1776.jpg", link: "https://en.wikipedia.org/wiki/Dutch_Malacca", facts: ["Melaka: Dutch", "No British yet"] }
+  },
+  {
+    year: 1787,
+    us: { iso: "1787-09-17", date: "17 Sep 1787", title: "The US Constitution is signed", text: "Delegates in Philadelphia sign the Constitution. It is still the country's constitution today.", img: "img/us-1787.jpg", link: "https://en.wikipedia.org/wiki/Constitution_of_the_United_States" },
+    film: { title: "Hamilton", year: "2020", note: "The founding fathers, as a musical", link: "https://en.wikipedia.org/wiki/Hamilton_(2020_film)" },
+    my: { date: "11 Aug 1786", iso: "1786-08-11", title: "Penang has just become British", text: "A year earlier, on 11 August 1786, Francis Light raised the British flag on Penang under a deal with the Sultan of Kedah. George Town is Britain's first foothold in Malaya.", img: "img/my-1787.jpg", link: "https://en.wikipedia.org/wiki/History_of_Penang", facts: ["British: Penang only"] }
+  },
+  {
+    year: 1861,
+    us: { iso: "1861-04-12", date: "12 Apr 1861", title: "The Civil War begins", text: "Confederate guns fire on Fort Sumter. Four years of war follow. It ends slavery and kills hundreds of thousands of soldiers.", img: "img/us-1861.jpg", link: "https://en.wikipedia.org/wiki/American_Civil_War" },
+    film: { title: "Gone with the Wind", year: "1939", note: "The South during the Civil War", link: "https://en.wikipedia.org/wiki/Gone_with_the_Wind_(film)" },
+    my: { date: "1857", iso: "1857", title: "Kuala Lumpur is a four-year-old tin camp", text: "Tin miners founded KL in 1857 where the Klang and Gombak rivers meet. Yap Ah Loy (pictured), a tin miner, becomes its Kapitan Cina in 1868. In Perak, rival Chinese societies start fighting the Larut Wars over tin.", img: "img/my-1861.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/History_of_Kuala_Lumpur", facts: ["Straits Settlements: Penang, Melaka, Singapore"] }
+  },
+  {
+    year: 1876,
+    us: { iso: "1876-03-10", date: "10 Mar 1876", title: "The first telephone call", text: "Alexander Graham Bell calls his assistant in the next room: \"Mr. Watson, come here, I want to see you.\"", img: "img/us-1876.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/Invention_of_the_telephone" },
+    my: { date: "2 Nov 1875", iso: "1875-11-02", title: "Perak's British Resident was just killed", text: "The 1874 Pangkor Treaty forced a British Resident on Perak. In November 1875 the Resident, J.W.W. Birch, was killed at Pasir Salak. Maharaja Lela is hanged the next year. (Pictured: Birch.)", img: "img/my-1876.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/James_W._W._Birch", facts: ["Pangkor Treaty 1874"] }
+  },
+  {
+    year: 1903,
+    us: { iso: "1903-12-17", date: "17 Dec 1903", title: "The Wright brothers fly", text: "Orville Wright flies for 12 seconds at Kill Devil Hills, near Kitty Hawk, North Carolina. It is the first powered airplane flight.", img: "img/us-1903.jpg", link: "https://en.wikipedia.org/wiki/Wright_Flyer" },
+    my: { date: "1 Jul 1896", iso: "1896-07-01", title: "The Federated Malay States, run from KL", text: "Since 1896 the British have run Perak, Selangor, Negeri Sembilan and Pahang together from Kuala Lumpur. The Sultan Abdul Samad Building opened in 1897. Rubber is about to boom as Americans start buying cars.", img: "img/my-1903.jpg", link: "https://en.wikipedia.org/wiki/Federated_Malay_States", facts: ["FMS since 1896", "Capital: KL"] }
+  },
+  {
+    year: 1929,
+    us: { iso: "1929-10-29", date: "29 Oct 1929", title: "Wall Street crashes", text: "On Black Tuesday the stock market collapses. The Great Depression begins.", img: "img/us-1929.jpg", link: "https://en.wikipedia.org/wiki/Wall_Street_crash_of_1929" },
+    my: { date: "1930–1933", iso: "", gapText: "Same period", title: "Rubber and tin prices collapse", text: "Malaya earns its money selling rubber and tin, much of it to America. When US demand falls, estates and mines close. From August 1930 the British limit Chinese immigration.", img: "img/my-1929.jpg", link: "https://en.wikipedia.org/wiki/British_Malaya", facts: ["British Malaya", "Rubber & tin"] }
+  },
+  {
+    year: 1941,
+    us: { iso: "1941-12-07", date: "7 Dec 1941", title: "Pearl Harbor", text: "Japanese planes attack the US fleet in Hawaii. America enters World War II.", img: "img/us-1941.jpg", link: "https://en.wikipedia.org/wiki/Attack_on_Pearl_Harbor" },
+    film: { title: "Pearl Harbor", year: "2001", note: "The attack itself", link: "https://en.wikipedia.org/wiki/Pearl_Harbor_(film)" },
+    my: { date: "8 Dec 1941", iso: "1941-12-08", gapText: "About 1 hour earlier", title: "Japan lands at Kota Bharu first", text: "The Japanese landing at Kota Bharu, Kelantan began about an hour before the bombs fell on Pearl Harbor (it was already 8 December here). KL falls in January and Singapore in February 1942. The occupation lasts until 1945.", img: "img/my-1941.jpg", link: "https://en.wikipedia.org/wiki/Battle_of_Kota_Bharu", facts: ["Occupation 1941–45"] }
+  },
+  {
+    year: 1955,
+    us: { iso: "1955-07-17", date: "17 Jul 1955", title: "Disneyland opens", text: "Walt Disney opens his first theme park in Anaheim, California.", img: "img/us-1955.jpg", link: "https://en.wikipedia.org/wiki/Disneyland" },
+    my: { date: "27 Jul 1955", iso: "1955-07-27", title: "First election, then the Baling Talks", text: "Ten days later the Alliance wins 51 of 52 seats in Malaya's first federal election, and Tunku Abdul Rahman becomes Chief Minister. On 28 December he meets communist leader Chin Peng at Baling. The Emergency continues until 1960.", img: "img/my-1955.jpg", link: "https://en.wikipedia.org/wiki/Baling_Talks", facts: ["Chief Minister: Tunku", "Emergency 1948–60"] }
+  },
+  {
+    year: 1957,
+    us: { iso: "1957-10-17", date: "Oct 1957", title: "Elvis in Jailhouse Rock", text: "Elvis Presley, the biggest star in America, premieres his film Jailhouse Rock. The title song tops the charts.", img: "img/us-1957.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/Jailhouse_Rock_(film)" },
+    film: { title: "Elvis", year: "2022", note: "Elvis Presley's life", link: "https://en.wikipedia.org/wiki/Elvis_(2022_film)" },
+    my: { date: "31 Aug 1957", iso: "1957-08-31", gapText: "About 7 weeks earlier", title: "Merdeka!", text: "Seven weeks earlier, on 31 August, Tunku Abdul Rahman read the proclamation at Stadium Merdeka and shouted \"Merdeka!\" seven times. Malaya is independent. Sabah, Sarawak and Singapore are not part of it yet.", img: "img/my-1957.jpg", link: "https://en.wikipedia.org/wiki/Malayan_Declaration_of_Independence", facts: ["PM: Tunku Abdul Rahman", "11 states"] }
+  },
+  {
+    year: 1963,
+    us: { iso: "1963-11-22", date: "22 Nov 1963", title: "JFK is shot in Dallas", text: "President John F. Kennedy is assassinated while riding in an open-top motorcade through Dealey Plaza.", img: "img/us-1963.jpg", link: "https://en.wikipedia.org/wiki/Assassination_of_John_F._Kennedy" },
+    film: { title: "JFK", year: "1991", note: "The investigation into the assassination", link: "https://en.wikipedia.org/wiki/JFK_(film)" },
+    my: { date: "16 Sep 1963", iso: "1963-09-16", title: "Malaysia is only 67 days old", text: "Malaya, Singapore, Sabah and Sarawak joined on 16 September. Indonesia's Sukarno answered with Konfrontasi and the cry \"Ganyang Malaysia\". Singapore is still one of the states.", img: "img/my-1963.jpg", link: "https://en.wikipedia.org/wiki/Malaysia_Agreement", facts: ["PM: Tunku Abdul Rahman", "14 states"] }
+  },
+  {
+    year: 1969,
+    us: { iso: "1969-07-20", date: "20 Jul 1969", title: "Man walks on the Moon", text: "Apollo 11 lands. Neil Armstrong and Buzz Aldrin step onto the lunar surface while about 600 million people watch.", img: "img/us-1969.jpg", link: "https://en.wikipedia.org/wiki/Apollo_11" },
+    film: { title: "First Man", year: "2018", note: "Neil Armstrong and Apollo 11", link: "https://en.wikipedia.org/wiki/First_Man_(film)" },
+    my: { date: "13 May 1969", iso: "1969-05-13", title: "Two months after 13 May", text: "Racial riots in Kuala Lumpur followed the May election. Parliament is suspended and the country is run by the National Operations Council (MAGERAN) under Tun Abdul Razak.", img: "img/my-1969.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/13_May_incident", facts: ["Parliament suspended", "Emergency rule"] }
+  },
+  {
+    year: 1975,
+    us: { iso: "1975-04-30", date: "30 Apr 1975", title: "Saigon falls", text: "Helicopters lift the last Americans off rooftops as North Vietnamese tanks enter Saigon. The Vietnam War is over.", img: "img/us-1975.jpg", link: "https://en.wikipedia.org/wiki/Fall_of_Saigon" },
+    my: { date: "1 Jul 1975", iso: "1975-07-01", title: "Muhammad Ali fights in KL", text: "On 1 July, Muhammad Ali defends his world heavyweight title against Joe Bugner at Stadium Merdeka and wins on points after 15 rounds. Tun Abdul Razak is Prime Minister.", img: "img/my-1975.jpg", fit: "contain", link: "https://en.wikipedia.org/wiki/Muhammad_Ali", facts: ["PM: Tun Abdul Razak", "Stadium Merdeka"] }
+  },
+  {
+    year: 1981,
+    us: { iso: "1981-04-12", date: "12 Apr 1981", title: "The Space Shuttle flies", text: "Columbia launches from Florida on STS-1, the first flight of a reusable spacecraft.", img: "img/us-1981.jpg", link: "https://en.wikipedia.org/wiki/STS-1" },
+    my: { date: "16 Jul 1981", iso: "1981-07-16", title: "Mahathir is three months away", text: "Hussein Onn is Prime Minister. On 16 July 1981 Dr Mahathir Mohamad takes over and stays for 22 years: Look East, Proton, the Twin Towers.", img: "img/my-1981.jpg", link: "https://en.wikipedia.org/wiki/Mahathir_Mohamad", facts: ["PM: Hussein Onn", "then Mahathir"] }
+  },
+  {
+    year: 1986,
+    us: { iso: "1986-01-28", date: "28 Jan 1986", title: "Challenger explodes", text: "The shuttle breaks apart 73 seconds after launch, killing all seven crew, including teacher Christa McAuliffe.", img: "img/us-1986.jpg", link: "https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster" },
+    my: { date: "9 Jul 1985", iso: "1985-07-09", title: "The Proton Saga is on the road", text: "Malaysia's first national car launched in July 1985. Within a few years it holds most of the local car market.", img: "img/my-1986.jpg", link: "https://en.wikipedia.org/wiki/Proton_Saga", facts: ["PM: Mahathir", "Saga: RM17,000-ish"] }
+  }
+];
+
+const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+const ERAS = [
+  { id: "before", from: 1776, title: "Before the British", sub: "Sultanates and Dutch Melaka" },
+  { id: "british", from: 1786, title: "British Malaya", sub: "1786–1941" },
+  { id: "war", from: 1941, title: "War and Emergency", sub: "Japanese occupation, then the communist insurgency" },
+  { id: "malaya", from: 1957, title: "Malaya", sub: "Independent, before Malaysia" },
+  { id: "malaysia", from: 1963, title: "Malaysia", sub: "From 16 September 1963" }
+];
+const eraOf = year => ERAS.filter(x => year >= x.from).pop();
+
+function mySideLabel(year) {
+  return year < 1963 ? "Tanah Melayu" : "Malaysia";
+}
+
+function parseIso(iso) {
+  const [y, m = 1, d = 1] = iso.split("-").map(Number);
+  return { y, m, d, exact: iso.length === 10 };
+}
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+function gapLabel(e) {
+  if (e.my.gapText) return e.my.gapText;
+  const a = parseIso(e.us.iso), b = parseIso(e.my.iso);
+  const earlier = b.y < a.y || (b.y === a.y && (b.m < a.m || (b.m === a.m && b.d < a.d)));
+  const [from, to] = earlier ? [b, a] : [a, b];
+  const side = earlier ? "earlier" : "later";
+  if (!b.exact) return `About ${plural(to.y - from.y, "year")} ${side}`;
+  let y = to.y - from.y, m = to.m - from.m, d = to.d - from.d;
+  if (d < 0) { m -= 1; d += new Date(Date.UTC(to.y, to.m - 1, 0)).getUTCDate(); }
+  if (m < 0) { y -= 1; m += 12; }
+  if (y === 0 && m === 0 && d === 0) return "Same day";
+  if (y > 0) return `${plural(y, "year")}${m ? " " + plural(m, "month") : ""} ${side}`;
+  if (m > 0) return `${plural(m, "month")}${d ? " " + plural(d, "day") : ""} ${side}`;
+  return `${plural(d, "day")} ${side}`;
+}
+
+function card(side, e, year) {
+  const d = e[side];
+  const flag = side === "us" ? "USA" : mySideLabel(year);
+  const usAge = year - 1776;
+  const chips = side === "us"
+    ? [usAge === 0 ? "USA: day one" : `USA: ${usAge} yrs old`]
+    : [...d.facts, year < 1957 ? `Merdeka in ${1957 - year} yrs` : `Merdeka +${year - 1957}`];
+  return `
+    <article class="card ${side}">
+      <figure>
+        <img class="${d.fit || ""}" src="${d.img}" alt="${escapeHtml(d.title)}" loading="lazy">
+        <span class="flag">${flag}</span>
+      </figure>
+      <div class="body">
+        ${side === "us" ? `<div class="date">${d.date}</div>` : `<div class="date">${d.date} <span class="gap">${gapLabel(e)}</span></div>`}
+        <h2>${escapeHtml(d.title)}</h2>
+        <p>${escapeHtml(d.text)}</p>
+        ${side === "us" && e.film ? `<a class="film" href="${e.film.link}" target="_blank" rel="noopener"><img src="img/film/${year}.jpg" alt="${escapeHtml(e.film.title)} poster" loading="lazy"><div><span>The movie</span>${escapeHtml(e.film.title)} (${e.film.year})<em>${escapeHtml(e.film.note)}</em></div></a>` : ""}
+        <div class="facts">${chips.map(f => `<span>${escapeHtml(f)}</span>`).join("")}</div>
+        <a class="more" href="${d.link}" target="_blank" rel="noopener">Read on Wikipedia →</a>
+      </div>
+    </article>`;
+}
+
+function pair(e) {
+  const { us, my, year } = { ...e };
+  const usAge = year - 1776;
+  const film = e.film ? `<a class="film" href="${e.film.link}" target="_blank" rel="noopener"><img src="img/film/${year}.jpg" alt="${escapeHtml(e.film.title)} poster" loading="lazy"><div><span>The movie</span>${escapeHtml(e.film.title)} (${e.film.year})<em>${escapeHtml(e.film.note)}</em></div></a>` : "";
+  const myChips = [...my.facts, year < 1957 ? `Merdeka in ${1957 - year} yrs` : `Merdeka +${year - 1957}`];
+  return `
+    <article class="pair">
+      <div class="pair-imgs">
+        <figure class="us"><img class="${us.fit || ""}" src="${us.img}" alt="${escapeHtml(us.title)}" loading="lazy"><span class="flag">USA</span></figure>
+        <figure class="my"><img class="${my.fit || ""}" src="${my.img}" alt="${escapeHtml(my.title)}" loading="lazy"><span class="flag">${mySideLabel(year)}</span></figure>
+      </div>
+      <div class="pair-body">
+        <div class="pline us">
+          <div class="date">${us.date} · ${usAge === 0 ? "USA day one" : `USA ${usAge} yrs old`}</div>
+          <h2>${escapeHtml(us.title)}</h2>
+        </div>
+        <div class="pline my">
+          <div class="date">${my.date} <span class="gap">${gapLabel(e)}</span></div>
+          <h2>${escapeHtml(my.title)}</h2>
+        </div>
+        <details>
+          <summary>Read more</summary>
+          <div class="more-body">
+            <p><b class="tag us">USA</b> ${escapeHtml(us.text)} <a href="${us.link}" target="_blank" rel="noopener">Wikipedia</a></p>
+            ${film}
+            <p><b class="tag my">${mySideLabel(year)}</b> ${escapeHtml(my.text)} <a href="${my.link}" target="_blank" rel="noopener">Wikipedia</a></p>
+            <div class="facts">${myChips.map(f => `<span>${escapeHtml(f)}</span>`).join("")}</div>
+          </div>
+        </details>
+      </div>
+    </article>`;
+}
+
+function render(eraId) {
+  let html = "", lastEra = null;
+  for (const e of EVENTS) {
+    const era = eraOf(e.year);
+    if (eraId !== "all" && era.id !== eraId) continue;
+    if (era !== lastEra) {
+      html += `<div class="era"><strong>${era.title}</strong><span>${era.sub}</span></div>`;
+      lastEra = era;
+    }
+    html += `
+    <section class="row" aria-label="${e.year}">
+      <div class="year">${e.year}</div>
+      ${card("us", e, e.year)}
+      ${card("my", e, e.year)}
+      ${pair(e)}
+    </section>`;
+  }
+  document.getElementById("timeline").innerHTML = html;
+}
+
+const filters = document.getElementById("filters");
+filters.innerHTML = [["all", "All"], ...ERAS.map(x => [x.id, x.title])]
+  .map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${v === "all"}">${l}</button>`).join("");
+filters.addEventListener("click", ev => {
+  const b = ev.target.closest("button");
+  if (!b) return;
+  filters.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  render(b.dataset.v);
+});
+render("all");
+</script>
+</body>
+</html>
